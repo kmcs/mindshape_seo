@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -146,7 +147,9 @@ class BackendController extends ActionController
                 );
             }
 
-            $pageRenderer->setBackPath('../typo3/');
+            if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '8.0.0', '<')) {
+                $pageRenderer->setBackPath('../typo3/');
+            }
         }
 
         if ($currentAction === 'settings') {

@@ -29,6 +29,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * @package mindshape_seo
@@ -58,6 +59,10 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\PageTreeView
      */
     public function getCount($uid)
     {
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '8.0.0', '>=')) {
+            return parent::getCount($uid);
+        }
+
         if (is_array($this->data)) {
             $res = $this->getDataInit($uid);
 

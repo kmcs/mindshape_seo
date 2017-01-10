@@ -176,7 +176,11 @@
         var $tcaForm = $('form');
         var $currentPreview = $('.google-preview');
         var currentPageUid = $currentPreview.find('input[name="pageUid"]').val();
-        var focusKeyword = $('#focusKeyword').val().trim();
+        var focusKeyword = $('#focusKeyword').val();
+
+        if (undefined !== focusKeyword) {
+          focusKeyword = focusKeyword.trim();
+        }
 
         $tcaForm.find('input[data-formengine-input-name="data[pages][' + currentPageUid + '][title]"], input[data-formengine-input-name="data[pages_language_overlay][' + currentPageUid + '][title]"]').on('keyup', function () {
           $currentPreview.find('.preview-box .title').html($(this).val());
@@ -460,7 +464,7 @@
       this.clearPreviewTitle($previewContainer);
       this.clearUrlTitle($previewContainer);
 
-      if ('' === focusKeyword) {
+      if ('' === focusKeyword || undefined === focusKeyword) {
         return;
       }
 
@@ -523,9 +527,13 @@
       }
 
       var descriptionLengthPixel = this.calcStringPixelLength(description, this.googleFontFamily, this.googleDescriptionFontSize);
-      var focusKeyword = $.trim('undefined' !== typeof $focusKeywordInput ?
+      var focusKeyword = 'undefined' !== typeof $focusKeywordInput ?
         $focusKeywordInput.val() :
-        $previewContainer.find('.focus-keyword input').val());
+        $previewContainer.find('.focus-keyword input').val();
+
+      if ('string' === typeof focusKeyword) {
+        focusKeyword = focusKeyword.trim();
+      }
 
       var $alertsContainer = $previewContainer.find('.alerts-container');
       var alertsCounter = 0;
@@ -559,7 +567,7 @@
         }
       }
 
-      if (0 === focusKeyword.length) {
+      if (undefined === focusKeyword || 0 === focusKeyword.length) {
         $alertsContainer.find('.focus-keyword').hide();
         $alertsContainer.find('.focus-keyword-missing').show();
         alertsCounter++;
